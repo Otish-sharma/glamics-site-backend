@@ -44,14 +44,21 @@ app.use('/uploads', express.static('uploads')); // Serve uploaded files
 app.use(express.static('public')); // Serve admin dashboard
 
 // PostgreSQL connection configuration
+// const pool = new Pool({
+//   user: 'postgres',
+//   host: 'localhost',
+//   database: 'test',
+//   password: 'otish',
+//   port: 5432,
+// });
+
 const pool = new Pool({
-  user: 'postgres',
+  user: 'test_aliu_user',
   host: 'localhost',
-  database: 'test',
-  password: 'otish',
+  database: 'test_aliu',
+  password: 'RhiBxsUS598u6wAOvDssn0pOyq0C9lmL',
   port: 5432,
 });
-
 // Test database connection
 pool.connect((err, client, release) => {
   if (err) {

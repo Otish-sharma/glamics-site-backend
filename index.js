@@ -1,3 +1,5 @@
+const dotenv = require("dotenv");
+
 const express = require('express');
 const { Pool } = require('pg');
 const cors = require('cors');
@@ -6,6 +8,7 @@ const path = require('path');
 const fs = require('fs');
 const app = express();
 const port = 5000;
+dotenv.config();
 
 // Create uploads directory if it doesn't exist
 const uploadsDir = path.join(__dirname, 'uploads');
@@ -45,20 +48,22 @@ app.use(express.static('public')); // Serve admin dashboard
 
 // PostgreSQL connection configuration
 // const pool = new Pool({
-//   user: 'postgres',
-//   host: 'localhost',
-//   database: 'test',
-//   password: 'otish',
-//   port: 5432,
+//   user: process.env.DB_USER || 'postgres',
+//   host: process.env.DB_HOST || 'localhost',
+//   database: process.env.DB_NAME || 'test',
+//   password: process.env.DB_PASSWORD || 'otish',
+//   port: process.env.DB_PORT || 5432,
 // });
 
+
 const pool = new Pool({
-  user: 'test_aliu_user',
-  host: 'localhost',
-  database: 'test_aliu',
-  password: 'RhiBxsUS598u6wAOvDssn0pOyq0C9lmL',
-  port: 5432,
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.DATABASE_URL.includes("render.com")
+    ? { rejectUnauthorized: false }
+    : false,
 });
+
+
 // Test database connection
 pool.connect((err, client, release) => {
   if (err) {
